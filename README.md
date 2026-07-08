@@ -1,16 +1,29 @@
-# chess_tournament_manager
+# ♟️ Chess Tournament Management System
 
-A new Flutter project.
+A Flutter application developed for the **Bytelogik Technical Assessment**.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+* Player CRUD
+* Tournament CRUD
+* Add Players to Tournament
+* Random Match Generation
+* Tournament Rankings (Top 3)
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* Flutter
+* Dart
+* Riverpod
+* SQLite
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🎥 Demo Video
+
+https://drive.google.com/file/d/1joeCUCZfn9wzsnzEyWlf1IhJ_UVrzIJw/view?usp=sharing
+
+## Run
+
+```bash
+flutter pub get
+flutter run
+```

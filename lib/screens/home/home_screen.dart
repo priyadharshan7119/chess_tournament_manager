@@ -7,180 +7,68 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
-      backgroundColor: const Color(0xffF5F7FA),
-
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              // Header
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xff4F46E5),
-                      Color(0xff7C3AED),
-                    ],
-                  ),
-                ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    Icon(
-                      Icons.emoji_events,
-                      color: Colors.white,
-                      size: 50,
-                    ),
-
-                    SizedBox(height: 20),
-
-                    Text(
-                      "Chess Tournament",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    SizedBox(height: 8),
-
-                    Text(
-                      "Manage Players, Tournaments and Rankings",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              const Text(
-                "Quick Actions",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 15),
-
-              LayoutBuilder(
-                builder: (context, constraints) {
-
-                  int crossAxisCount =
-                  constraints.maxWidth > 700 ? 2 : 1;
-
-                  return GridView.count(
-                    crossAxisCount: crossAxisCount,
-                    shrinkWrap: true,
-                    physics:
-                    const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    childAspectRatio: 2.4,
-                    children: [
-
-                      _dashboardCard(
-                        context,
-                        color: Colors.blue,
-                        icon: Icons.people,
-                        title: "Players",
-                        subtitle: "Manage Players",
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                              const PlayerScreen(),
-                            ),
-                          );
-                        },
-                      ),
-
-                      _dashboardCard(
-                        context,
-                        color: Colors.orange,
-                        icon: Icons.emoji_events,
-                        title: "Tournament",
-                        subtitle: "Manage Tournament",
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                              const TournamentScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
-
-              const SizedBox(height: 30),
-
-              // const Text(
-              //   "About",
-              //   style: TextStyle(
-              //     fontWeight: FontWeight.bold,
-              //     fontSize: 22,
-              //   ),
-              // ),
-              //
-              // const SizedBox(height: 15),
-              //
-              // Card(
-              //   elevation: 4,
-              //   shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(20),
-              //   ),
-              //   child: const Padding(
-              //     padding: EdgeInsets.all(20),
-              //     child: Row(
-              //       children: [
-              //
-              //         CircleAvatar(
-              //           radius: 30,
-              //           backgroundColor: Colors.deepPurple,
-              //           child: Icon(
-              //             Icons.sports_esports,
-              //             color: Colors.white,
-              //           ),
-              //         ),
-              //
-              //         SizedBox(width: 20),
-              //
-              //         Expanded(
-              //           child: Text(
-              //             "This application manages chess tournaments by allowing player management, tournament creation, random match generation and ranking display.",
-              //             style: TextStyle(
-              //               fontSize: 15,
-              //             ),
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-
-              SizedBox(height: size.height * .02),
-            ],
+      backgroundColor: const Color(0xFFF5F3FF),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: const Color(0xFF6D28D9),
+        foregroundColor: Colors.white,
+        title: const Text(
+          "Chess Tournament Manager",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
           ),
+        ),
+      ),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final crossAxisCount = constraints.maxWidth > 700 ? 2 : 1;
+
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: GridView.count(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+                childAspectRatio: 1.15,
+                children: [
+                  _dashboardCard(
+                    context,
+                    title: "Players",
+                    subtitle: "Add, Edit & Delete Players",
+                    icon: Icons.people_alt_rounded,
+                    color: const Color(0xFF7C3AED),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const PlayerScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  _dashboardCard(
+                    context,
+                    title: "Tournament",
+                    subtitle: "Create & Manage Tournaments",
+                    icon: Icons.emoji_events_rounded,
+                    color: const Color(0xFFA855F7),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const TournamentScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -188,66 +76,96 @@ class HomeScreen extends StatelessWidget {
 
   Widget _dashboardCard(
       BuildContext context, {
-        required Color color,
-        required IconData icon,
         required String title,
         required String subtitle,
+        required IconData icon,
+        required Color color,
         required VoidCallback onTap,
       }) {
     return InkWell(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(24),
       onTap: onTap,
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: color.withOpacity(0.2),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.15),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Row(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              CircleAvatar(
-                radius: 28,
-                backgroundColor: color.withOpacity(.15),
+              Container(
+                height: 80,
+                width: 80,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.12),
+                  shape: BoxShape.circle,
+                ),
                 child: Icon(
                   icon,
+                  size: 42,
                   color: color,
-                  size: 30,
                 ),
               ),
 
-              const SizedBox(width: 18),
+              const SizedBox(height: 22),
 
-              Expanded(
-                child: Column(
-                  mainAxisAlignment:
-                  MainAxisAlignment.center,
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
-                  children: [
-
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-
-                    const SizedBox(height: 5),
-
-                    Text(
-                      subtitle,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF2E1065),
                 ),
               ),
 
-              const Icon(Icons.arrow_forward_ios),
+              const SizedBox(height: 10),
+
+              Text(
+                subtitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 15,
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              ElevatedButton.icon(
+                onPressed: onTap,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 14,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                icon: const Icon(Icons.arrow_forward_rounded),
+                label: const Text(
+                  "Open",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

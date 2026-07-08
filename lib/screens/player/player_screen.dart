@@ -12,12 +12,20 @@ class PlayerScreen extends ConsumerWidget {
     final players = ref.watch(playerProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xffF5F7FA),
+      backgroundColor: const Color(0xFFF5F3FF),
 
       appBar: AppBar(
-        title: const Text("Players"),
-        centerTitle: true,
         elevation: 0,
+        centerTitle: true,
+        backgroundColor: const Color(0xFF6D28D9),
+        foregroundColor: Colors.white,
+        title: const Text(
+          "Players",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
 
       floatingActionButton: FloatingActionButton.extended(
@@ -172,81 +180,207 @@ class PlayerScreen extends ConsumerWidget {
       WidgetRef ref, {
         Player? player,
       }) {
-    final nameController =
-    TextEditingController(text: player?.name ?? "");
+    final nameController = TextEditingController(
+      text: player?.name ?? "",
+    );
 
-    final ratingController =
-    TextEditingController(
+    final ratingController = TextEditingController(
       text: player?.rating.toString() ?? "",
     );
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (_) => Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(25),
         ),
-        title: Text(
-          player == null
-              ? "Add Player"
-              : "Edit Player",
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
 
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: "Player Name",
-                border: OutlineInputBorder(),
-              ),
+                CircleAvatar(
+                  radius: 35,
+                  backgroundColor: Colors.blue.shade100,
+                  child: const Icon(
+                    Icons.person,
+                    size: 35,
+                    color: Colors.blue,
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                Text(
+                  player == null
+                      ? "Add Player"
+                      : "Edit Player",
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                Text(
+                  player == null
+                      ? "Enter player details"
+                      : "Update player information",
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: "Player Name",
+                    prefixIcon: const Icon(Icons.person),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                TextField(
+                  controller: ratingController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: "Player Rating",
+                    hintText: "Example: 1800",
+                    prefixIcon: const Icon(Icons.star),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+                Row(
+                  children: [
+
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(15),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Cancel"),
+                      ),
+                    ),
+
+                    const SizedBox(width: 15),
+
+                    Expanded(
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(15),
+                          ),
+                        ),
+                        onPressed: () async {
+
+                          if (nameController.text
+                              .trim()
+                              .isEmpty ||
+                              ratingController.text
+                                  .trim()
+                                  .isEmpty) {
+
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Please fill all fields",
+                                ),
+                              ),
+                            );
+
+                            return;
+                          }
+
+                          final rating = int.tryParse(
+                            ratingController.text,
+                          );
+
+                          if (rating == null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Enter a valid rating",
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+
+                          final newPlayer = Player(
+                            id: player?.id,
+                            name: nameController.text.trim(),
+                            rating: rating,
+                          );
+
+                          if (player == null) {
+                            await ref
+                                .read(
+                                playerProvider.notifier)
+                                .addPlayer(newPlayer);
+                          } else {
+                            await ref
+                                .read(
+                                playerProvider.notifier)
+                                .updatePlayer(newPlayer);
+                          }
+
+                          if (context.mounted) {
+                            Navigator.pop(context);
+
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  player == null
+                                      ? "Player Added Successfully"
+                                      : "Player Updated Successfully",
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(
+                          player == null
+                              ? "Add"
+                              : "Update",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-
-            const SizedBox(height: 20),
-
-            TextField(
-              controller: ratingController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: "Rating",
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
           ),
-
-          FilledButton(
-            onPressed: () async {
-              final newPlayer = Player(
-                id: player?.id,
-                name: nameController.text.trim(),
-                rating: int.parse(ratingController.text),
-              );
-
-              if (player == null) {
-                await ref
-                    .read(playerProvider.notifier)
-                    .addPlayer(newPlayer);
-              } else {
-                await ref
-                    .read(playerProvider.notifier)
-                    .updatePlayer(newPlayer);
-              }
-
-              Navigator.pop(context);
-            },
-            child: Text(
-              player == null ? "Save" : "Update",
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

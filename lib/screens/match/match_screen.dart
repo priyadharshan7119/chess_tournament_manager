@@ -65,11 +65,20 @@ class _MatchScreenState extends State<MatchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF5F7FA),
+      backgroundColor: const Color(0xFFF5F3FF),
 
       appBar: AppBar(
-        title: Text(widget.tournament.name),
+        elevation: 0,
         centerTitle: true,
+        backgroundColor: const Color(0xFF6D28D9),
+        foregroundColor: Colors.white,
+        title: Text(
+          widget.tournament.name,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
 
       floatingActionButton: FloatingActionButton.extended(

@@ -76,11 +76,20 @@ class _RankingScreenState extends State<RankingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF5F7FA),
+      backgroundColor: const Color(0xFFF5F3FF),
 
       appBar: AppBar(
-        title: const Text("Tournament Ranking"),
+        elevation: 0,
         centerTitle: true,
+        backgroundColor: const Color(0xFF6D28D9),
+        foregroundColor: Colors.white,
+        title: const Text(
+          "Tournament Ranking",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
 
       body: rankings.isEmpty
